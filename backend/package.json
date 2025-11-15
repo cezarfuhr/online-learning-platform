@@ -44,7 +44,12 @@
     "pdfkit": "^0.13.0",
     "uuid": "^9.0.1",
     "rxjs": "^7.8.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "stripe": "^14.7.0",
+    "@nestjs/websockets": "^10.2.10",
+    "@nestjs/platform-socket.io": "^10.2.10",
+    "socket.io": "^4.6.0",
+    "nodemailer": "^6.9.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.2.1",

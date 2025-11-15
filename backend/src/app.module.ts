@@ -14,6 +14,11 @@ import { QuizzesModule } from './modules/quizzes/quizzes.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { ForumModule } from './modules/forum/forum.module';
 import { ProgressModule } from './modules/progress/progress.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { SearchModule } from './modules/search/search.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -40,6 +45,11 @@ import { ProgressModule } from './modules/progress/progress.module';
     CertificatesModule,
     ForumModule,
     ProgressModule,
+    PaymentsModule,
+    SearchModule,
+    ReviewsModule,
+    NotificationsModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule {}

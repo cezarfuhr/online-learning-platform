@@ -4,6 +4,7 @@ import { User } from '../../users/entities/user.entity';
 import { CourseModule } from './course-module.entity';
 import { CourseEnrollment } from './course-enrollment.entity';
 import { Certificate } from '../../certificates/entities/certificate.entity';
+import { CourseCategory } from './course-category.entity';
 
 export enum CourseLevel {
   BEGINNER = 'beginner',
@@ -55,4 +56,13 @@ export class Course extends BaseEntity {
 
   @Column('decimal', { precision: 3, scale: 2, default: 0 })
   rating: number;
+
+  @ManyToOne(() => CourseCategory, category => category.courses, { nullable: true })
+  category: CourseCategory;
+
+  @Column('simple-array', { nullable: true })
+  tags: string[];
+
+  @Column({ default: 0 })
+  reviewsCount: number;
 }

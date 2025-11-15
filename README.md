@@ -35,6 +35,36 @@ Plataforma completa de educação online com recursos avançados de streaming de
 - **Roles e Permissões**: Sistema de controle de acesso (Student, Instructor, Admin)
 - **Sessões Seguras**: Proteção contra ataques comuns
 
+### 💳 Sistema de Pagamentos
+- **Integração Stripe**: Processamento seguro de pagamentos
+- **Assinaturas**: Planos mensais (Basic, Pro, Enterprise)
+- **Reembolsos**: Sistema automatizado de reembolsos
+- **Webhooks**: Sincronização em tempo real com Stripe
+
+### 🔍 Busca Avançada
+- **Filtros Múltiplos**: Por preço, nível, categoria, rating
+- **Recomendações**: Sistema inteligente de recomendações
+- **Trending**: Cursos em alta baseados em matrículas recentes
+- **Sugestões**: Autocompletar para busca rápida
+
+### ⭐ Sistema de Avaliações
+- **Reviews Verificados**: Apenas alunos matriculados podem avaliar
+- **Distribuição de Ratings**: Estatísticas detalhadas (1-5 estrelas)
+- **Helpful Votes**: Marcação de reviews úteis
+- **Moderação**: Sistema de moderação de reviews
+
+### 🔔 Notificações em Tempo Real
+- **WebSockets**: Notificações instantâneas via Socket.io
+- **Tipos Diversos**: Matrículas, novos conteúdos, certificados, etc.
+- **Email**: Notificações por email (configurável)
+- **Centro de Notificações**: Histórico completo e contadores
+
+### 📈 Analytics para Instrutores
+- **Dashboard Completo**: Métricas de receita, alunos, engajamento
+- **Análise de Cursos**: Performance individual de cada curso
+- **Taxa de Conclusão**: Acompanhamento de progresso dos alunos
+- **Receita Temporal**: Gráficos de receita ao longo do tempo
+
 ## 🛠️ Tecnologias
 
 ### Backend
@@ -44,6 +74,8 @@ Plataforma completa de educação online com recursos avançados de streaming de
 - **Redis**: Cache e gerenciamento de sessões
 - **AWS SDK**: Integração com serviços AWS
 - **PDFKit**: Geração de certificados em PDF
+- **Stripe**: Processamento de pagamentos
+- **Socket.io**: WebSockets para notificações em tempo real
 - **Jest**: Framework de testes
 
 ### Frontend
@@ -102,6 +134,10 @@ AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
 AWS_CLOUDFRONT_DOMAIN=your-cloudfront-domain.cloudfront.net
 AWS_S3_BUCKET=your-bucket-name
+
+# Stripe
+STRIPE_SECRET_KEY=sk_test_your-stripe-secret-key
+STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
 ```
 
 ### 3. Inicie com Docker Compose
@@ -168,6 +204,50 @@ GET /certificates/verify/:number - Verificar certificado
 GET /certificates/my - Meus certificados
 ```
 
+#### Pagamentos
+```
+POST /payments/create-intent - Criar intenção de pagamento
+POST /payments/confirm/:id - Confirmar pagamento
+POST /payments/refund/:id - Solicitar reembolso
+GET /payments/my-payments - Histórico de pagamentos
+POST /payments/subscriptions - Criar assinatura
+GET /payments/my-subscription - Minha assinatura
+```
+
+#### Busca
+```
+GET /search/courses - Buscar cursos com filtros
+GET /search/popular - Cursos populares
+GET /search/trending - Cursos em alta
+GET /search/recommended - Recomendações personalizadas
+GET /search/suggestions - Sugestões de busca
+```
+
+#### Avaliações
+```
+POST /reviews - Criar avaliação
+PUT /reviews/:id - Atualizar avaliação
+DELETE /reviews/:id - Deletar avaliação
+GET /reviews/course/:id - Avaliações do curso
+POST /reviews/:id/helpful - Marcar como útil
+GET /reviews/course/:id/stats - Estatísticas de avaliações
+```
+
+#### Notificações
+```
+GET /notifications - Listar notificações
+GET /notifications/unread-count - Contagem de não lidas
+POST /notifications/:id/read - Marcar como lida
+POST /notifications/mark-all-read - Marcar todas como lidas
+WS /notifications - WebSocket para notificações em tempo real
+```
+
+#### Analytics
+```
+GET /analytics/instructor/dashboard - Dashboard do instrutor
+GET /analytics/course/:id - Analytics de curso específico
+```
+
 ## 🧪 Testes
 
 ### Backend
@@ -228,7 +308,12 @@ online-learning-platform/
 │   │   │   ├── quizzes/    # Quizzes e avaliações
 │   │   │   ├── certificates/ # Certificados
 │   │   │   ├── forum/      # Fórum de discussão
-│   │   │   └── progress/   # Progresso do aluno
+│   │   │   ├── progress/   # Progresso do aluno
+│   │   │   ├── payments/   # Sistema de pagamentos
+│   │   │   ├── search/     # Busca e filtros
+│   │   │   ├── reviews/    # Avaliações e reviews
+│   │   │   ├── notifications/ # Notificações em tempo real
+│   │   │   └── analytics/  # Analytics e métricas
 │   │   ├── common/         # Componentes compartilhados
 │   │   └── config/         # Configurações
 │   └── test/               # Testes
