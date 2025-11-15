@@ -1,0 +1,21 @@
+<div class="app-container">
+  <nav class="navbar" *ngIf="authService.currentUser$ | async as user">
+    <div class="nav-brand">
+      <a routerLink="/">🎓 {{ title }}</a>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/courses" routerLinkActive="active">Courses</a>
+      <a routerLink="/forum" routerLinkActive="active">Forum</a>
+      <a routerLink="/certificates" routerLinkActive="active">Certificates</a>
+      <div class="user-menu">
+        <span>{{ user.firstName }} {{ user.lastName }}</span>
+        <button (click)="logout()" class="btn btn-logout">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
