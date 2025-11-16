@@ -1,0 +1,118 @@
+<div class="reviews-container">
+  <div class="reviews-header">
+    <h2>Student Reviews</h2>
+  </div>
+
+  <!-- Rating Stats -->
+  <div *ngIf="stats" class="rating-stats">
+    <div class="overall-rating">
+      <div class="rating-number">{{ stats.averageRating.toFixed(1) }}</div>
+      <div class="stars">
+        <span *ngFor="let star of getStars(Math.round(stats.averageRating))" class="star">★</span>
+      </div>
+      <div class="total-reviews">{{ stats.totalReviews }} reviews</div>
+    </div>
+
+    <div class="rating-distribution">
+      <div *ngFor="let rating of [5, 4, 3, 2, 1]" class="distribution-row">
+        <span class="rating-label">{{ rating }} ★</span>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getRatingPercentage(rating)"></div>
+        </div>
+        <span class="rating-count">{{ stats.ratingDistribution[rating] || 0 }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Review / Write Review -->
+  <div *ngIf="authService.isAuthenticated()" class="my-review-section">
+    <div *ngIf="!showForm && !myReview">
+      <button (click)="showForm = true" class="btn btn-primary">
+        Write a Review
+      </button>
+    </div>
+
+    <div *ngIf="!showForm && myReview" class="my-review-card">
+      <h3>Your Review</h3>
+      <div class="stars">
+        <span *ngFor="let star of getStars(myReview.rating)" class="star">★</span>
+      </div>
+      <p>{{ myReview.comment }}</p>
+      <button (click)="showForm = true" class="btn btn-secondary btn-sm">
+        Edit Review
+      </button>
+    </div>
+
+    <div *ngIf="showForm" class="review-form">
+      <h3>{{ myReview ? 'Edit Your Review' : 'Write a Review' }}</h3>
+      <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="rating-input">
+            <input
+              type="range"
+              min="1"
+              max="5"
+              formControlName="rating"
+              class="rating-slider"
+            />
+            <span class="rating-value">{{ reviewForm.get('rating')?.value }} Stars</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Comment (Optional)</label>
+          <textarea
+            formControlName="comment"
+            rows="4"
+            class="form-control"
+            placeholder="Share your experience with this course..."
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            {{ myReview ? 'Update Review' : 'Submit Review' }}
+          </button>
+          <button type="button" (click)="showForm = false" class="btn btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reviews List -->
+  <div class="reviews-list">
+    <div *ngIf="loading" class="loading">Loading reviews...</div>
+
+    <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+      <p>No reviews yet. Be the first to review this course!</p>
+    </div>
+
+    <div *ngFor="let review of reviews" class="review-card">
+      <div class="review-header">
+        <div class="reviewer-info">
+          <strong>{{ review.user.firstName }} {{ review.user.lastName }}</strong>
+          <span *ngIf="review.isVerifiedPurchase" class="verified-badge">✓ Verified Purchase</span>
+        </div>
+        <div class="review-date">
+          {{ review.createdAt | date:'MMM d, yyyy' }}
+          <span *ngIf="review.editedAt">(edited)</span>
+        </div>
+      </div>
+
+      <div class="stars">
+        <span *ngFor="let star of getStars(review.rating)" class="star">★</span>
+      </div>
+
+      <p class="review-comment">{{ review.comment }}</p>
+
+      <div class="review-actions">
+        <button (click)="markHelpful(review.id)" class="btn-helpful">
+          👍 Helpful ({{ review.helpfulCount }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

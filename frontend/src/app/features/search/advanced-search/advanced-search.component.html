@@ -1,0 +1,148 @@
+<div class="search-container">
+  <div class="search-header">
+    <h1>Find Your Perfect Course</h1>
+  </div>
+
+  <div class="search-content">
+    <!-- Filters Sidebar -->
+    <aside class="filters-sidebar">
+      <form [formGroup]="searchForm">
+        <div class="filter-section">
+          <h3>Search</h3>
+          <div class="search-input-wrapper">
+            <input
+              type="text"
+              formControlName="query"
+              placeholder="Search courses..."
+              class="form-control"
+            />
+            <div *ngIf="suggestions.length > 0" class="suggestions">
+              <div
+                *ngFor="let suggestion of suggestions"
+                (click)="selectSuggestion(suggestion)"
+                class="suggestion-item"
+              >
+                {{ suggestion }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Level</h3>
+          <select formControlName="level" class="form-control">
+            <option value="">All Levels</option>
+            <option *ngFor="let level of levels" [value]="level">
+              {{ level | titlecase }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-section">
+          <h3>Price Range</h3>
+          <div class="price-inputs">
+            <input
+              type="number"
+              formControlName="minPrice"
+              placeholder="Min"
+              class="form-control"
+            />
+            <span>-</span>
+            <input
+              type="number"
+              formControlName="maxPrice"
+              placeholder="Max"
+              class="form-control"
+            />
+          </div>
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isFree" />
+            Free courses only
+          </label>
+        </div>
+
+        <div class="filter-section">
+          <h3>Minimum Rating</h3>
+          <select formControlName="minRating" class="form-control">
+            <option value="0">Any Rating</option>
+            <option value="4">4+ Stars</option>
+            <option value="4.5">4.5+ Stars</option>
+          </select>
+        </div>
+
+        <div class="filter-section">
+          <h3>Sort By</h3>
+          <select formControlName="sortBy" class="form-control">
+            <option *ngFor="let option of sortOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <button type="button" (click)="clearFilters()" class="btn btn-secondary">
+          Clear Filters
+        </button>
+      </form>
+    </aside>
+
+    <!-- Results -->
+    <main class="results-main">
+      <div class="results-header">
+        <p>{{ total }} courses found</p>
+      </div>
+
+      <div *ngIf="loading" class="loading">Loading...</div>
+
+      <div *ngIf="!loading && courses.length === 0" class="empty-state">
+        <p>No courses found matching your criteria.</p>
+        <button (click)="clearFilters()" class="btn btn-primary">
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="courses-grid">
+        <div *ngFor="let course of courses" class="course-card">
+          <img
+            [src]="course.thumbnailUrl || '/assets/default-course.jpg'"
+            alt="{{ course.title }}"
+            class="course-thumbnail"
+          />
+          <div class="course-info">
+            <h3>{{ course.title }}</h3>
+            <p class="instructor">{{ course.instructor.firstName }} {{ course.instructor.lastName }}</p>
+            <div class="course-meta">
+              <span class="level">{{ course.level }}</span>
+              <span class="rating">⭐ {{ course.rating.toFixed(1) }}</span>
+              <span class="students">{{ course.studentsCount }} students</span>
+            </div>
+            <div class="course-footer">
+              <span class="price">${{ course.price }}</span>
+              <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="lastPage > 1" class="pagination">
+        <button
+          (click)="search(currentPage - 1)"
+          [disabled]="currentPage === 1"
+          class="btn btn-secondary"
+        >
+          Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ lastPage }}</span>
+        <button
+          (click)="search(currentPage + 1)"
+          [disabled]="currentPage === lastPage"
+          class="btn btn-secondary"
+        >
+          Next
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
