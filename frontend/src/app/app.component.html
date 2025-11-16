@@ -6,8 +6,10 @@
     <div class="nav-links">
       <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       <a routerLink="/courses" routerLinkActive="active">Courses</a>
+      <a routerLink="/search" routerLinkActive="active">Search</a>
       <a routerLink="/forum" routerLinkActive="active">Forum</a>
       <a routerLink="/certificates" routerLinkActive="active">Certificates</a>
+      <app-notifications-bell></app-notifications-bell>
       <div class="user-menu">
         <span>{{ user.firstName }} {{ user.lastName }}</span>
         <button (click)="logout()" class="btn btn-logout">Logout</button>

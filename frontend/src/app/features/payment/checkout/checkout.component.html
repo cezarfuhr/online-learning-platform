@@ -1,0 +1,41 @@
+<div class="checkout-container">
+  <div class="checkout-card">
+    <h2>Complete Your Purchase</h2>
+
+    <div class="course-info">
+      <h3>{{ courseTitle }}</h3>
+      <p class="price">${{ amount }}</p>
+    </div>
+
+    <div *ngIf="!success" class="payment-form">
+      <div class="form-row">
+        <label for="card-element">
+          Credit or debit card
+        </label>
+        <div id="card-element" class="stripe-element"></div>
+      </div>
+
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+
+      <button
+        (click)="handleSubmit()"
+        [disabled]="loading"
+        class="btn btn-primary"
+      >
+        <span *ngIf="!loading">Pay ${{ amount }}</span>
+        <span *ngIf="loading">Processing...</span>
+      </button>
+
+      <div class="secure-badge">
+        🔒 Secure payment powered by Stripe
+      </div>
+    </div>
+
+    <div *ngIf="success" class="success-message">
+      <div class="success-icon">✓</div>
+      <h3>Payment Successful!</h3>
+      <p>You now have access to {{ courseTitle }}</p>
+      <a routerLink="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+  </div>
+</div>

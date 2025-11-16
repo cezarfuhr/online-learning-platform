@@ -27,6 +27,30 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'search',
+    loadComponent: () =>
+      import('./features/search/advanced-search/advanced-search.component').then(
+        (m) => m.AdvancedSearchComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'checkout/:courseId',
+    loadComponent: () =>
+      import('./features/payment/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'notifications',
+    loadComponent: () =>
+      import('./features/notifications/notifications-page/notifications-page.component').then(
+        (m) => m.NotificationsPageComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '**',
     redirectTo: '/dashboard',
   },
